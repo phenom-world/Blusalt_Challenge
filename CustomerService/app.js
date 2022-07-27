@@ -26,7 +26,7 @@ const sendRequest = async (customerId, amount) => {
 app.post("/depositfunds", async (req, res) => {
   const { customerId, amount } = req.body;
   const response = await sendRequest(customerId, amount);
-  return res.json({ data: response.data, message: "Fund deposited succesfully." });
+  return res.json({ data: response.data.data, message: "Fund deposited succesfully." });
 });
 
 module.exports = app;
