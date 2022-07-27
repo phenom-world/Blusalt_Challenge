@@ -15,6 +15,7 @@ const TransactionSchema = new mongoose.Schema(
       enum: ["success", "pending", "failed"],
       default: "pending",
     },
+    charges: Number,
   },
   { timestamp: true }
 );

@@ -31,9 +31,9 @@ const createTransaction = async (customerId, amount) => {
 };
 
 // update transaction status
-const updateTransaction = async (transactionId, status) => {
+const updateTransaction = async (transactionId, status, charge) => {
   try {
-    const txn = await Transaction.findByIdAndUpdate(transactionId, { $set: { status } }, { new: true });
+    const txn = await Transaction.findByIdAndUpdate(transactionId, { $set: { status: status, charge: charge } }, { new: true });
     return txn;
   } catch (error) {
     console.log(error);
@@ -62,9 +62,9 @@ app.post("/update-details", async (req, res) => {
 
   channel.consume("BILLING SERVICE", async (data) => {
     const transaction = JSON.parse(data.content);
-    await updateTransaction(transaction._id, transaction.transactionStatus);
+    const updatedTransaction = await updateTransaction(transaction._id, transaction.status, transaction.charge);
 
-    return res.json({ data: transaction, message: "Transaction completed." });
+    return res.json({ data: updatedTransaction, message: "Transaction completed." });
   });
 });
 
